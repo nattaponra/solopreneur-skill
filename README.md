@@ -39,23 +39,66 @@ Claude skill สำหรับ Solo Entrepreneur ที่ต้องการ
 
 ---
 
-## วิธีติดตั้งบน Claude Code
+## วิธีติดตั้ง
 
-### วิธีที่ 1 — Clone โดยตรง (แนะนำ)
+### 🖥️ Claude Desktop (Cowork mode)
+
+Cowork รองรับ Custom Skills ผ่านการวาง skill folder ไว้ใน skills directory ของ Claude Desktop
+
+**macOS**
 
 ```bash
-# Personal skill — ใช้ได้ทุก project
+# 1. สร้าง skills directory (ถ้ายังไม่มี)
+mkdir -p ~/Library/Application\ Support/Claude/skills
+
+# 2. Clone skill ลงไป
+git clone https://github.com/nattaponra/solopreneur-skill.git \
+  ~/Library/Application\ Support/Claude/skills/solopreneur-skill
+```
+
+**Windows**
+
+```powershell
+# 1. สร้าง skills directory (ถ้ายังไม่มี)
+mkdir "$env:APPDATA\Claude\skills" -Force
+
+# 2. Clone skill ลงไป
+git clone https://github.com/nattaponra/solopreneur-skill.git `
+  "$env:APPDATA\Claude\skills\solopreneur-skill"
+```
+
+**เรียกใช้งานใน Cowork**
+
+พิมพ์ใน chat ได้เลย เช่น:
+```
+ฉันมีไอเดียอยากสร้าง app ช่วยให้ freelancer ออก invoice ได้เร็วขึ้น
+```
+
+Cowork จะ detect อัตโนมัติจาก `when_to_use` ใน skill และเรียกใช้งานให้เลย  
+หรือพิมพ์ slash command: `/solopreneur-skill`
+
+> **หมายเหตุ:** หลัง clone แล้วให้ restart Claude Desktop เพื่อให้ skill โหลดใหม่
+
+---
+
+### ⌨️ Claude Code (CLI)
+
+**วิธีที่ 1 — Personal Skill (แนะนำ) ใช้ได้ทุก project**
+
+```bash
 git clone https://github.com/nattaponra/solopreneur-skill.git \
   ~/.claude/skills/solopreneur-skill
 ```
 
+**วิธีที่ 2 — Project Skill ใช้เฉพาะ project นั้น**
+
 ```bash
-# Project skill — ใช้เฉพาะ project นั้น
+# รันในโฟลเดอร์ project ของคุณ
 git clone https://github.com/nattaponra/solopreneur-skill.git \
   .claude/skills/solopreneur-skill
 ```
 
-### วิธีที่ 2 — Copy ด้วยตัวเอง
+**วิธีที่ 3 — Copy ด้วยตัวเอง**
 
 ```bash
 mkdir -p ~/.claude/skills/solopreneur-skill
@@ -63,13 +106,28 @@ cp SKILL.md ~/.claude/skills/solopreneur-skill/
 cp -r references ~/.claude/skills/solopreneur-skill/
 ```
 
-### เรียกใช้งาน
+**เรียกใช้งานใน Claude Code**
 
 ```
 /solopreneur-skill
 ```
 
-หรือให้ Claude เรียกอัตโนมัติเมื่อตรวจพบว่าคุณกำลัง develop product
+หรือให้ Claude detect อัตโนมัติเมื่อตรวจพบว่าคุณกำลัง develop product
+
+---
+
+### 🔄 อัปเดต Skill
+
+```bash
+# Claude Code (Personal)
+cd ~/.claude/skills/solopreneur-skill && git pull
+
+# Claude Code (Project)
+cd .claude/skills/solopreneur-skill && git pull
+
+# Claude Desktop (macOS)
+cd ~/Library/Application\ Support/Claude/skills/solopreneur-skill && git pull
+```
 
 ---
 
