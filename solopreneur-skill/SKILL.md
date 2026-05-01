@@ -1,5 +1,5 @@
 ---
-name: digital-product-dev
+name: solopreneur-skill
 description: >
   Use this skill whenever a solo entrepreneur, founder, or product owner needs help developing a digital product end-to-end.
   This skill covers the full product development lifecycle: Problem/Solution Fit, Business Model design, Research & Validation,
