@@ -30,11 +30,18 @@
 
 ### สิ่งที่ Agent Dev ทำ
 - วิเคราะห์ user story และ acceptance criteria
-- เสนอ implementation approach (ถ้ามีหลาย option อธิบาย trade-off)
+- เสนอ implementation approach **ที่ง่ายที่สุดที่แก้ปัญหาได้** (ถ้ามีหลาย option อธิบาย trade-off)
 - เขียน pseudocode หรือ code จริงตาม tech stack ที่เลือก
 - ระบุ dependencies และ integration points
 - บันทึก technical decisions ลงใน `04-tech-stack.md`
 - ส่งผลงานให้ Agent QA ตรวจทันทีหลังเสร็จ
+
+### MVP Rules สำหรับ Agent Dev
+Agent Dev ต้องยึดหลักเหล่านี้ทุกครั้ง:
+- **Simple over clever** — ถ้าเขียน 10 บรรทัดแก้ได้ ไม่ใช้ library ใหม่เพื่อเขียน 3 บรรทัด
+- **No premature optimization** — อย่า optimize ก่อนมี evidence ว่ามันช้าจริง
+- **Reuse existing stack** — ใช้ tools ที่อยู่ใน `04-tech-stack.md` อยู่แล้ว ไม่เพิ่ม dependency ใหม่โดยไม่จำเป็น
+- **Flag scope creep** — ถ้า user story ดูเกินกว่า problem statement เดิม ให้แจ้ง Orchestrator ก่อน implement
 
 ### Prompt Template สำหรับ Orchestrator ใช้ spawn Agent Dev
 
@@ -102,8 +109,25 @@ QA ไม่ได้รับ context จาก Dev นอกจาก user sto
 - ตรวจ security concerns เบื้องต้น
 - ตรวจ performance considerations
 - ตรวจว่า code/logic ตรงกับ architecture ที่กำหนดไว้
+- **ตรวจ MVP alignment** — feature นี้ตรงกับ problem statement ใน `01-problem-solution.md` ไหม?
+- **ตรวจ over-engineering** — มี dependency, complexity หรือ abstraction ที่ไม่จำเป็นสำหรับ MVP ไหม?
 - บันทึก bugs ที่พบลงใน `04-bug-log.md`
 - ออก QA Report ก่อนส่งให้ PO
+
+### MVP Checks สำหรับ Agent QA
+เพิ่ม 2 checks นี้ในทุก QA Report:
+
+```
+### MVP Alignment Check
+□ Feature นี้แก้ปัญหาใน problem statement โดยตรง: YES / NO / PARTIAL
+□ มี scope ที่เกินกว่า MVP ไหม: YES (ระบุ) / NO
+□ ถ้า YES → แนะนำให้ตัดส่วนไหนออก: [รายละเอียด]
+
+### Complexity Check
+□ มี dependency ใหม่ที่ไม่จำเป็น: YES (ระบุ) / NO
+□ มี abstraction ที่ซับซ้อนเกินไปสำหรับ MVP: YES (ระบุ) / NO
+□ มีวิธีที่ง่ายกว่าที่ให้ผลเหมือนกัน: YES (แนะนำ) / NO
+```
 
 ### Prompt Template สำหรับ Orchestrator ใช้ spawn Agent QA
 
