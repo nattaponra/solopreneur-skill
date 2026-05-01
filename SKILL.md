@@ -291,38 +291,44 @@ MVP ที่ดีต้อง:
 |--------|-----|---------|
 | **Product Owner** | ผู้ใช้ (คุณ) | กำหนด priority, approve sprint output |
 | **Orchestrator** | Claude หลัก | ประสานงาน agents, สรุป sprint review |
+| **Agent PM** | Sub-agent | ตรวจ scope & MVP alignment ก่อนเริ่ม sprint |
+| **Agent UX** | Sub-agent | ตรวจ user flow & aesthetic direction ก่อน Dev |
 | **Agent Dev** | Sub-agent | Implement features ตาม user stories |
+| **Agent Security** | Sub-agent | ตรวจ security หลัง Dev เสร็จ ก่อน QA |
 | **Agent QA** | Sub-agent | Validate งาน Dev อย่างอิสระ |
-| **Agent Docs** | Sub-agent | สร้างและอัปเดตเอกสารทั้งหมด |
+| **Agent Docs** | Sub-agent | Commit เอกสารทั้งหมดขึ้น GitHub |
 
-### Sprint Cycle พร้อม Agents (2 สัปดาห์)
+### Sprint Cycle พร้อม 6 Agents (2 สัปดาห์)
 
 ```
-Sprint Planning (Orchestrator + PO)
-    → Agent Dev implements
-    → Agent QA validates (อิสระจาก Dev)
-        → FAIL? → Dev แก้ → QA ตรวจซ้ำ
-        → PASS? → Agent Docs อัปเดตเอกสาร
-    → Orchestrator สรุป Sprint Review Report
-    → PO รีวิวและ approve
-    → Sprint Retrospective
-    → Sprint ถัดไป
+① Agent PM   → ตรวจ scope & MVP alignment
+② Agent UX   → ตรวจ user flow & aesthetic direction
+③ Agent Dev  → implement features
+④ Agent Security → ตรวจ security issues
+⑤ Agent QA   → validate อิสระ (PASS/FAIL)
+⑥ Agent Docs → commit เอกสารขึ้น GitHub
+→ PO approve → Sprint Retro → Sprint ถัดไป
 ```
 
 ### กฎสำคัญของ Multi-Agent
 
-- **Agent QA ต้องทำงานอิสระ** — spawn หลัง Dev เสร็จ ไม่ได้รับ context การตัดสินใจของ Dev
-- **ทุก sprint ต้องมีทั้ง 3 agents** — ไม่ข้าม QA แม้งานจะดูง่าย
-- **ถ้า QA FAIL** — Dev แก้ก่อน QA ตรวจซ้ำ ไม่ส่ง FAIL ให้ PO โดยไม่มีแผน
+- **Agent PM ก่อนเสมอ** — ตรวจ scope ก่อน Dev เริ่ม ป้องกัน waste
+- **Agent UX ก่อน Dev** — จับ UX issues ตั้งแต่ต้น ถูกกว่าแก้ทีหลัง
+- **Agent QA และ Security ทำงานอิสระ** — ไม่รับ context การตัดสินใจของ Dev
+- **ทุก sprint ต้องมีทั้ง 6 agents** — ไม่ข้ามขั้นตอน แม้งานจะดูง่าย
+- **ถ้า FAIL** — Dev แก้ก่อน agent ตรวจซ้ำ ไม่ส่ง FAIL ให้ PO
 - **PO เป็น final decision maker** — agents เสนอ verdict แต่ PO approve เสมอ
 
 ### สิ่งที่แต่ละ Agent ผลิต
 
 | Agent | Output |
 |-------|--------|
+| PM | Sprint scope review + story alignment + verdict |
+| UX | User flow review + aesthetic direction + edge cases |
 | Dev | Implementation plan + code/pseudocode + edge cases |
-| QA | Acceptance criteria results + bugs found + verdict (PASS/FAIL) |
-| Docs | เอกสารอัปเดต: backlog, sprint review, bug log, API docs |
+| Security | Security issues + severity + verdict |
+| QA | Acceptance criteria results + bugs + verdict (PASS/FAIL) |
+| Docs | เอกสาร commit ขึ้น GitHub ทั้งหมด |
 
 ---
 
