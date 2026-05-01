@@ -201,14 +201,79 @@ Sprint Planning → Development → Sprint Review (PO รีวิว) → Retro
 
 ---
 
+## 📄 Document Output — เขียนเอกสารระหว่างทาง
+
+ทุกครั้งที่ผ่านขั้นตอนสำคัญ ให้**สร้างและบันทึกเอกสารจริง** ลงใน workspace ของผู้ใช้เสมอ ไม่ใช่แค่แสดงใน chat
+
+เหตุผลที่สำคัญ: เอกสารเหล่านี้คือ "สมองของ product" — ผู้ใช้จะกลับมาอ้างอิง แก้ไข และแชร์กับทีมหรือนักลงทุนในอนาคต
+
+### เอกสารที่ต้องสร้างแต่ละ Phase
+
+| Phase | เอกสาร | ชื่อไฟล์ | Format |
+|-------|--------|---------|--------|
+| 1 | Problem & Solution Statement | `01-problem-solution.md` | Markdown |
+| 2 | Lean Canvas | `02-lean-canvas.md` | Markdown |
+| 2 | Business Model Summary | `02-business-model.md` | Markdown |
+| 3 | Hypothesis & Validation Plan | `03-validation-plan.md` | Markdown |
+| 3 | User Interview Guide | `03-interview-guide.md` | Markdown |
+| 3 | Validation Results | `03-validation-results.md` | Markdown |
+| 4 | Product Requirements Document (PRD) | `04-prd.md` | Markdown |
+| 4 | Product Backlog | `04-backlog.md` | Markdown |
+| 4 | Sprint Plan (ทุก sprint) | `04-sprint-[N]-plan.md` | Markdown |
+| 4 | Sprint Review (ทุก sprint) | `04-sprint-[N]-review.md` | Markdown |
+
+### โฟลเดอร์โครงสร้าง
+
+บันทึกเอกสารทั้งหมดใน workspace ภายใต้โฟลเดอร์ชื่อ product:
+
+```
+[ชื่อ product]/
+├── 01-problem-solution.md
+├── 02-lean-canvas.md
+├── 02-business-model.md
+├── 03-validation-plan.md
+├── 03-interview-guide.md
+├── 03-validation-results.md
+├── 04-prd.md
+├── 04-backlog.md
+├── 04-sprint-1-plan.md
+├── 04-sprint-1-review.md
+└── 04-sprint-2-plan.md  ← เพิ่มเรื่อยๆ
+```
+
+ถามชื่อ product จากผู้ใช้ในช่วง Intake แล้วใช้เป็นชื่อโฟลเดอร์ (lowercase, ใช้ `-` แทนเว้นวรรค)
+
+### กฎการเขียนเอกสาร
+
+- **สร้างเอกสารทันทีหลังจบแต่ละขั้นตอนสำคัญ** — ไม่รอจนจบ phase
+- **อัปเดตเอกสารเดิมถ้ามีการแก้ไข** — ไม่สร้างไฟล์ใหม่ซ้ำ
+- **ทุกเอกสารต้องมี header:** วันที่สร้าง, phase, สถานะ (Draft / Final)
+- **ลิงก์ไฟล์ให้ผู้ใช้เสมอ** หลังบันทึก เพื่อให้เปิดดูได้ทันที
+- ถ้าผู้ใช้มี workspace folder ที่เลือกไว้แล้ว ให้บันทึกที่นั่น ถ้ายังไม่มีให้ถาม
+
+### Header Template สำหรับทุกเอกสาร
+
+```markdown
+# [ชื่อเอกสาร] — [ชื่อ Product]
+**สร้างเมื่อ:** [วันที่]
+**Phase:** [1–4]
+**สถานะ:** Draft / Final
+**อัปเดตล่าสุด:** [วันที่]
+
+---
+[เนื้อหา]
+```
+
+---
+
 ## Checklist ก่อนเริ่มแต่ละ Phase
 
 ก่อนไป Phase ถัดไปเสมอ ให้ตรวจว่า:
 
-**Phase 1 → 2:** มี Problem Statement + Solution Hypothesis ที่ชัดเจนแล้ว?
-**Phase 2 → 3:** มี Lean Canvas ครบ 9 blocks แล้ว?
-**Phase 3 → 4:** Validate ได้ว่ามีคนต้องการ solution นี้จริงแล้ว?
-**Sprint N → N+1:** PO (ผู้ใช้) approve sprint output แล้ว?
+**Phase 1 → 2:** มี Problem Statement + Solution Hypothesis ที่ชัดเจน และบันทึกใน `01-problem-solution.md` แล้ว?
+**Phase 2 → 3:** มี Lean Canvas ครบ 9 blocks และบันทึกใน `02-lean-canvas.md` แล้ว?
+**Phase 3 → 4:** Validate ได้ว่ามีคนต้องการ solution นี้จริง และบันทึกผลใน `03-validation-results.md` แล้ว?
+**Sprint N → N+1:** PO (ผู้ใช้) approve sprint review และบันทึกใน `04-sprint-[N]-review.md` แล้ว?
 
 ---
 
