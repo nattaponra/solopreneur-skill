@@ -43,6 +43,38 @@ from Problem/Solution Fit through Business Model, Research & Validation, and Scr
 
 ---
 
+## ⚙️ Step 0: GitHub Setup — ทำก่อนเริ่ม Intake เสมอ
+
+> อ่านรายละเอียดทั้งหมดใน `references/github-workflow.md`
+
+**ทุกครั้งที่ skill ถูกเรียกใช้ครั้งแรก ให้ถามก่อนเลยว่ามี GitHub repo แล้วหรือยัง**
+
+เหตุผล: GitHub คือ single source of truth ของ product นี้ — ทั้ง tasks, documents, และ history ต้องอยู่ที่นั่น ไม่ใช่แค่ใน chat
+
+### ถามผู้ใช้ 3 ข้อนี้ก่อน
+
+```
+1. มี GitHub repo สำหรับ product นี้แล้วหรือยังครับ?
+   → ถ้ายัง: ช่วย guide สร้างที่ github.com/new
+   → ถ้ามี: ขอ URL repo
+
+2. มี GitHub CLI (gh) ติดตั้งอยู่ไหมครับ?
+   → ถ้ามี: จะสร้าง labels/milestones/issues ผ่าน command ให้เลย
+   → ถ้าไม่มี: จะให้ link และ instructions ผ่าน GitHub web UI แทน
+
+3. repo เป็น Public หรือ Private?
+```
+
+### หลังได้ repo แล้ว ทำทันที
+
+1. **Initialize `docs/` folder** ใน repo พร้อม README สั้นๆ
+2. **สร้าง Labels** — phase-1 ถึง phase-4, user-story, bug, docs, future, blocked
+3. **สร้าง Milestone Sprint 1** (ค่อยทำเมื่อถึง Phase 4)
+
+เมื่อ setup เสร็จแล้วค่อยเริ่ม Intake ด้านล่าง
+
+---
+
 ## 🚀 Intake — เริ่มต้นทุกครั้งที่ Skill ถูกเรียกใช้
 
 **ทุกครั้งที่ skill นี้ถูก trigger ให้เริ่มด้วย Intake เสมอ** ก่อนทำอะไรทั้งนั้น
@@ -369,13 +401,14 @@ Sprint Planning (Orchestrator + PO)
 
 ถามชื่อ product จากผู้ใช้ในช่วง Intake แล้วใช้เป็นชื่อโฟลเดอร์ (lowercase, ใช้ `-` แทนเว้นวรรค)
 
-### กฎการเขียนเอกสาร
+### กฎการเขียนและ Maintain เอกสาร
 
 - **สร้างเอกสารทันทีหลังจบแต่ละขั้นตอนสำคัญ** — ไม่รอจนจบ phase
 - **อัปเดตเอกสารเดิมถ้ามีการแก้ไข** — ไม่สร้างไฟล์ใหม่ซ้ำ
 - **ทุกเอกสารต้องมี header:** วันที่สร้าง, phase, สถานะ (Draft / Final)
-- **ลิงก์ไฟล์ให้ผู้ใช้เสมอ** หลังบันทึก เพื่อให้เปิดดูได้ทันที
-- ถ้าผู้ใช้มี workspace folder ที่เลือกไว้แล้ว ให้บันทึกที่นั่น ถ้ายังไม่มีให้ถาม
+- **Commit ทุกครั้งหลังสร้างหรือแก้ไขเอกสาร** — เอกสารที่ยังไม่ได้ commit ถือว่าไม่มีอยู่จริง
+- **เอกสารทั้งหมดเก็บใน `docs/` ของ GitHub repo** — ไม่ใช่แค่ใน local หรือ chat
+- **ลิงก์ GitHub URL ให้ผู้ใช้เสมอ** หลัง commit เพื่อให้เปิดดูได้ทันที เช่น `https://github.com/user/repo/blob/main/docs/01-problem-solution.md`
 
 ### Header Template สำหรับทุกเอกสาร
 
@@ -396,10 +429,27 @@ Sprint Planning (Orchestrator + PO)
 
 ก่อนไป Phase ถัดไปเสมอ ให้ตรวจว่า:
 
-**Phase 1 → 2:** มี Problem Statement + Solution Hypothesis ที่ชัดเจน และบันทึกใน `01-problem-solution.md` แล้ว?
-**Phase 2 → 3:** มี Lean Canvas ครบ 9 blocks และบันทึกใน `02-lean-canvas.md` แล้ว?
-**Phase 3 → 4:** Validate ได้ว่ามีคนต้องการ solution นี้จริง และบันทึกผลใน `03-validation-results.md` แล้ว?
-**Sprint N → N+1:** PO (ผู้ใช้) approve sprint review และบันทึกใน `04-sprint-[N]-review.md` แล้ว?
+**Phase 1 → 2:**
+- [ ] Problem Statement + Solution Hypothesis ชัดเจน
+- [ ] `docs/01-problem-solution.md` committed ขึ้น GitHub แล้ว
+- [ ] Phase Gate Issue ปิดแล้ว (PO approve)
+
+**Phase 2 → 3:**
+- [ ] Lean Canvas ครบ 9 blocks
+- [ ] `docs/02-lean-canvas.md` และ `docs/02-business-model.md` committed แล้ว
+- [ ] Phase Gate Issue ปิดแล้ว
+
+**Phase 3 → 4:**
+- [ ] Validate ได้ว่ามีคนต้องการ solution จริง
+- [ ] `docs/03-validation-results.md` committed แล้ว
+- [ ] Phase Gate Issue ปิดแล้ว
+- [ ] GitHub repo พร้อม: Labels สร้างแล้ว, Milestone Sprint 1 สร้างแล้ว
+
+**Sprint N → N+1:**
+- [ ] Issues ทุกอันใน Sprint Milestone ปิดแล้วหรือ move ไป sprint ถัดไป
+- [ ] PO approve Sprint Review
+- [ ] `docs/04-sprint-N-review.md` และ `docs/04-sprint-N-retro.md` committed แล้ว
+- [ ] Milestone Sprint N+1 สร้างแล้ว
 
 ---
 
