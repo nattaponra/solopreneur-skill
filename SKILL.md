@@ -1,21 +1,8 @@
 ---
 name: solopreneur-skill
-description: >
-  Use this skill whenever a solo entrepreneur, founder, or product owner needs help developing a digital product end-to-end.
-  This skill covers the full product development lifecycle: Problem/Solution Fit, Business Model design, Research & Validation,
-  and SDLC using Scrum (with the user as Product Owner reviewing each sprint).
-
-  Trigger this skill when the user mentions any of the following:
-  - วางแผน product, สร้าง startup, พัฒนา app/web/platform
-  - Problem statement, solution hypothesis, value proposition
-  - Business model, Lean Canvas, revenue model
-  - User research, market validation, MVP, hypothesis testing
-  - Sprint planning, backlog, user story, sprint review, SDLC
-  - "ฉันมีไอเดีย…", "อยากสร้าง product…", "ช่วยวาง roadmap…"
-  - "I have an idea…", "help me plan my product…", "sprint planning…"
-
-  Always use this skill for any digital product development task — even if the user only asks about one phase.
-  The skill provides a structured, bilingual (Thai/English) workflow for solo founders acting as Product Owner.
+description: End-to-end digital product development for solo entrepreneurs. Guides from raw idea to shipped MVP using Problem/Solution Fit, Business Model (Lean Canvas), Research & Validation, and Scrum-based SDLC with 8 specialized sub-agents (PM, UX, Dev, Code Review, Security, QA, Docs, Manual). User acts as Product Owner reviewing each sprint. Bilingual Thai/English. Always use this skill for any product development task.
+when_to_use: |
+  Trigger when user mentions: มีไอเดีย, อยากสร้าง product/app/startup, วางแผน product, ทำ MVP, Lean Canvas, business model, user research, market validation, sprint planning, backlog, user story, sprint review, SDLC, roadmap, product owner, "I have an idea", "help me build", "help me plan my product", problem statement, solution hypothesis, value proposition, go-to-market.
 ---
 
 # Digital Product Development Skill
