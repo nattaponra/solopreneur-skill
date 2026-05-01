@@ -177,27 +177,46 @@ from Problem/Solution Fit through Business Model, Research & Validation, and Scr
 ## Phase 4 — SDLC with Scrum
 
 > อ่านรายละเอียดเพิ่มเติมใน `references/sdlc-scrum.md`
+> อ่านรายละเอียด multi-agent system ใน `references/agents.md`
 
 ### โครงสร้าง Scrum สำหรับ Solo Entrepreneur
 
-| บทบาท | ใคร |
-|--------|-----|
-| Product Owner | **ผู้ใช้ (คุณ)** — กำหนด priority, รีวิว sprint output |
-| Scrum Master + Dev Team | **Claude** — ช่วยวางแผน, เขียน stories, track progress |
+| บทบาท | ใคร | หน้าที่ |
+|--------|-----|---------|
+| **Product Owner** | ผู้ใช้ (คุณ) | กำหนด priority, approve sprint output |
+| **Orchestrator** | Claude หลัก | ประสานงาน agents, สรุป sprint review |
+| **Agent Dev** | Sub-agent | Implement features ตาม user stories |
+| **Agent QA** | Sub-agent | Validate งาน Dev อย่างอิสระ |
+| **Agent Docs** | Sub-agent | สร้างและอัปเดตเอกสารทั้งหมด |
 
-### Sprint Cycle (2 สัปดาห์)
+### Sprint Cycle พร้อม Agents (2 สัปดาห์)
 
 ```
-Sprint Planning → Development → Sprint Review (PO รีวิว) → Retrospective → Sprint Planning ถัดไป
+Sprint Planning (Orchestrator + PO)
+    → Agent Dev implements
+    → Agent QA validates (อิสระจาก Dev)
+        → FAIL? → Dev แก้ → QA ตรวจซ้ำ
+        → PASS? → Agent Docs อัปเดตเอกสาร
+    → Orchestrator สรุป Sprint Review Report
+    → PO รีวิวและ approve
+    → Sprint Retrospective
+    → Sprint ถัดไป
 ```
 
-### สิ่งที่ Claude ช่วยทำใน SDLC
-- **Product Backlog** — รายการ features ทั้งหมดพร้อม priority
-- **Sprint Planning** — เลือก stories สำหรับ sprint นี้
-- **User Stories** — เขียน story ในรูปแบบ "As a… I want… So that…"
-- **Acceptance Criteria** — เงื่อนไขที่ PO ใช้ตรวจงาน
-- **Sprint Review Checklist** — checklist สำหรับ PO รีวิว
-- **Sprint Retrospective** — สรุปบทเรียน ปรับปรุงกระบวนการ
+### กฎสำคัญของ Multi-Agent
+
+- **Agent QA ต้องทำงานอิสระ** — spawn หลัง Dev เสร็จ ไม่ได้รับ context การตัดสินใจของ Dev
+- **ทุก sprint ต้องมีทั้ง 3 agents** — ไม่ข้าม QA แม้งานจะดูง่าย
+- **ถ้า QA FAIL** — Dev แก้ก่อน QA ตรวจซ้ำ ไม่ส่ง FAIL ให้ PO โดยไม่มีแผน
+- **PO เป็น final decision maker** — agents เสนอ verdict แต่ PO approve เสมอ
+
+### สิ่งที่แต่ละ Agent ผลิต
+
+| Agent | Output |
+|-------|--------|
+| Dev | Implementation plan + code/pseudocode + edge cases |
+| QA | Acceptance criteria results + bugs found + verdict (PASS/FAIL) |
+| Docs | เอกสารอัปเดต: backlog, sprint review, bug log, API docs |
 
 ---
 

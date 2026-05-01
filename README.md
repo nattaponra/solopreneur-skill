@@ -15,6 +15,7 @@ Claude skill สำหรับ Solo Entrepreneur ที่ต้องการ
 
 - **ภาษา:** ไทย / English
 - **Framework:** Scrum — คุณรับบทบาท Product Owner ตรวจงานทุก Sprint
+- **Multi-Agent:** Phase 4 ใช้ sub-agents 3 ตัว (Dev / QA / Docs) ตรวจสอบกันเอง
 
 ---
 
@@ -100,6 +101,31 @@ validate แล้ว พร้อมสร้างแล้ว อยากเ
 2. สร้าง Product Backlog พร้อม user stories และ acceptance criteria
 3. วาง Sprint 1 Plan พร้อม story points
 4. บันทึก `04-prd.md`, `04-architecture.md`, `04-backlog.md`, `04-sprint-1-plan.md`
+
+---
+
+### 🤖 Multi-Agent Validation — Dev / QA / Docs
+
+**ใน Phase 4 ทุก sprint จะมี sub-agents 3 ตัวทำงานอัตโนมัติ:**
+
+```
+Agent Dev  →  implement feature
+Agent QA   →  validate อิสระ (ไม่รู้ context ของ Dev)
+Agent Docs →  อัปเดตเอกสารตามผลจริง
+```
+
+**คุณพิมพ์:**
+```
+Sprint 1 เริ่มเลย feature แรกคือ user login
+```
+
+**Skill จะ:**
+1. **Agent Dev** — วาง implementation plan + เขียน code/pseudocode สำหรับ login feature
+2. **Agent QA** — รับแค่ user story และ code ไปตรวจ acceptance criteria ทุกข้อ, หา edge cases, ออก verdict PASS/FAIL
+3. **Agent Docs** — อัปเดต backlog, บันทึก bug ที่ QA พบ, สร้าง sprint review draft
+4. **คุณ (PO)** — รับ Sprint Review Report สรุปพร้อม approve หรือ reject
+
+ถ้า QA **FAIL** → Dev แก้ → QA ตรวจซ้ำ → ผ่านแล้วค่อยส่งคุณรีวิว
 
 ---
 
