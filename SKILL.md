@@ -294,19 +294,23 @@ MVP ที่ดีต้อง:
 | **Agent PM** | Sub-agent | ตรวจ scope & MVP alignment ก่อนเริ่ม sprint |
 | **Agent UX** | Sub-agent | ตรวจ user flow & aesthetic direction ก่อน Dev |
 | **Agent Dev** | Sub-agent | Implement features ตาม user stories |
-| **Agent Security** | Sub-agent | ตรวจ security หลัง Dev เสร็จ ก่อน QA |
+| **Agent Code Reviewer** | Sub-agent | ตรวจ code smells & clean code หลัง Dev |
+| **Agent Security** | Sub-agent | ตรวจ security ก่อน QA |
 | **Agent QA** | Sub-agent | Validate งาน Dev อย่างอิสระ |
 | **Agent Docs** | Sub-agent | Commit เอกสารทั้งหมดขึ้น GitHub |
+| **Agent Manual** | Sub-agent | อัปเดต User Manual + screenshot placeholders ทุก sprint |
 
 ### Sprint Cycle พร้อม 6 Agents (2 สัปดาห์)
 
 ```
-① Agent PM   → ตรวจ scope & MVP alignment
-② Agent UX   → ตรวจ user flow & aesthetic direction
-③ Agent Dev  → implement features
-④ Agent Security → ตรวจ security issues
-⑤ Agent QA   → validate อิสระ (PASS/FAIL)
-⑥ Agent Docs → commit เอกสารขึ้น GitHub
+① Agent PM            → ตรวจ scope & MVP alignment
+② Agent UX            → ตรวจ user flow & aesthetic direction
+③ Agent Dev           → implement features
+④ Agent Code Reviewer → ตรวจ code smells & clean code
+⑤ Agent Security      → ตรวจ security issues
+⑥ Agent QA            → validate อิสระ (PASS/FAIL)
+⑦ Agent Docs          → commit เอกสารขึ้น GitHub  ┐ คู่ขนาน
+⑧ Agent Manual        → อัปเดต User Manual + screenshots ┘
 → PO approve → Sprint Retro → Sprint ถัดไป
 ```
 
@@ -326,9 +330,11 @@ MVP ที่ดีต้อง:
 | PM | Sprint scope review + story alignment + verdict |
 | UX | User flow review + aesthetic direction + edge cases |
 | Dev | Implementation plan + code/pseudocode + edge cases |
+| Code Reviewer | Code smells report + clean code issues + verdict |
 | Security | Security issues + severity + verdict |
 | QA | Acceptance criteria results + bugs + verdict (PASS/FAIL) |
 | Docs | เอกสาร commit ขึ้น GitHub ทั้งหมด |
+| Manual | User Manual section ใหม่ + screenshot placeholders |
 
 ---
 
@@ -360,6 +366,7 @@ MVP ที่ดีต้อง:
 | 4 | Bug & Issue Log | `04-bug-log.md` | Markdown |
 | 4 | Release Notes (ทุก release) | `04-release-[version].md` | Markdown |
 | 4 | API Documentation (ถ้ามี) | `04-api-docs.md` | Markdown |
+| 4 | User Manual (อัปเดตทุก sprint) | `04-user-manual.md` | Markdown |
 
 ### เมื่อไหร่สร้างเอกสาร SDLC แต่ละชิ้น
 
@@ -375,6 +382,7 @@ MVP ที่ดีต้อง:
 - **Bug Log** — สร้างตั้งแต่ Sprint 1 อัปเดตต่อเนื่อง
 - **Release Notes** — สร้างทุกครั้งที่ release version ใหม่
 - **API Docs** — สร้างเมื่อมี API เกิดขึ้น อัปเดตทุกครั้งที่ API เปลี่ยน
+- **User Manual** — สร้างตั้งแต่ Sprint 1 อัปเดตทุก sprint ที่มี feature ใหม่ Agent Manual รับผิดชอบโดยตรง แทรก `[SCREENSHOT: ...]` ทุกจุดที่ user อาจสับสน
 
 ### โฟลเดอร์โครงสร้าง
 

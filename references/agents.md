@@ -2,25 +2,25 @@
 
 ## ภาพรวม
 
-ใน Phase 4 (SDLC) skill จะใช้ **sub-agents 6 ตัว** ทำงานแบ่งหน้าที่กัน เพื่อให้แต่ละชิ้นงานผ่านการตรวจสอบโดย agent ที่เป็นอิสระจากกัน ก่อนส่งให้ PO (ผู้ใช้) รีวิวขั้นสุดท้าย
+ใน Phase 4 (SDLC) skill จะใช้ **sub-agents 8 ตัว** ทำงานแบ่งหน้าที่กัน เพื่อให้แต่ละชิ้นงานผ่านการตรวจสอบโดย agent ที่เป็นอิสระจากกัน ก่อนส่งให้ PO (ผู้ใช้) รีวิวขั้นสุดท้าย
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                   Orchestrator (Claude หลัก)                      │
-│       รับ instructions จาก PO, ประสานงาน agents ทั้งหมด          │
-└───┬──────────┬──────────┬──────────┬──────────┬──────────────────┘
-    │          │          │          │          │
-┌───▼───┐ ┌───▼───┐ ┌────▼───┐ ┌───▼───┐ ┌────▼────┐ ┌──────────┐
-│Agent  │ │Agent  │ │Agent   │ │Agent  │ │Agent    │ │Agent     │
-│  PM   │ │  UX   │ │  Dev   │ │  QA   │ │Security │ │  Docs    │
-│       │ │       │ │        │ │       │ │         │ │          │
-│scope  │ │design │ │implement│ │validate│ │security │ │document  │
-│check  │ │review │ │feature │ │& test │ │review   │ │& commit  │
-└───┬───┘ └───┬───┘ └────┬───┘ └───┬───┘ └────┬────┘ └──────────┘
-    │          │          │         │           │
-    └──────────┴──────────┴─────────┴───────────┘
-                          │
-                   PO Review (ผู้ใช้)
+┌────────────────────────────────────────────────────────────────────────┐
+│                        Orchestrator (Claude หลัก)                       │
+│            รับ instructions จาก PO, ประสานงาน agents ทั้งหมด            │
+└──┬────────┬────────┬────────┬────────┬────────┬────────┬───────────────┘
+   │        │        │        │        │        │        │
+┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌──▼──┐ ┌──────┐
+│Agent│ │Agent│ │Agent│ │Agent│ │Agent│ │Agent│ │Agent│ │Agent │
+│ PM  │ │ UX  │ │ Dev │ │Code │ │Secu-│ │ QA  │ │Docs │ │Manual│
+│     │ │     │ │     │ │Rev. │ │rity │ │     │ │     │ │      │
+│scope│ │desig│ │impl.│ │clean│ │secu.│ │vali-│ │doc. │ │user  │
+│chk  │ │rev. │ │feat.│ │code │ │rev. │ │date │ │&cmt │ │guide │
+└──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬──┘ └──┬───┘
+   │        │        │        │        │        │        │       │
+   └────────┴────────┴────────┴────────┴────────┴────────┴───────┘
+                                   │
+                            PO Review (ผู้ใช้)
 ```
 
 ---
@@ -304,6 +304,85 @@ Sprint: [N]
 
 ---
 
+## Agent Code Reviewer
+
+### บทบาท
+ตรวจ code quality หลัง Agent Dev implement เสร็จ ก่อนส่ง Security และ QA — จับ code smells, clean code violations และ maintainability issues เพื่อให้ codebase สะอาดตั้งแต่ต้น
+
+### สำคัญมาก
+Code Reviewer ไม่ตรวจว่า logic ถูกหรือผิด (นั่นคืองาน QA) แต่ตรวจว่า code เขียนได้ดีและดูแลง่ายในระยะยาวไหม
+
+### สิ่งที่ Agent Code Reviewer ตรวจ
+
+**Code Smells (สัญญาณอันตราย):**
+- Long Method — function ที่ยาวเกิน 20-30 บรรทัด (ควรแตกออก)
+- Large Class — class ที่รับผิดชอบมากเกินไป (ละเมิด Single Responsibility)
+- Duplicate Code — logic เดิมซ้ำในหลายที่
+- Magic Numbers/Strings — hardcode ค่าแบบ `if status === 3` โดยไม่มี constant
+- Dead Code — code ที่ไม่ถูกเรียกใช้แล้ว
+- Deeply Nested Logic — if ซ้อน if เกิน 3 ชั้น
+- God Object — object เดียวที่รู้ทุกอย่างและทำทุกอย่าง
+
+**Clean Code Principles:**
+- **Naming** — ชื่อ variable/function สื่อความหมายชัดไหม? (`getUserById` ดีกว่า `getU`)
+- **Single Responsibility** — แต่ละ function/class ทำสิ่งเดียวชัดเจนไหม?
+- **DRY** (Don't Repeat Yourself) — มี logic ที่ duplicate ไหม?
+- **Functions** — function ควรทำสิ่งเดียว รับ parameter น้อย (≤3) return ชัดเจน
+- **Comments** — comment อธิบาย "ทำไม" ไม่ใช่ "อะไร" (code ควรอ่านออกเองได้)
+- **Error Handling** — จัดการ error อย่างสม่ำเสมอ ไม่ silently catch แล้วเงียบ
+- **Consistent Style** — ใช้ pattern เดียวกันตลอด codebase
+
+**MVP Context — ไม่ over-engineer:**
+- ไม่บังคับ pattern ที่ซับซ้อนโดยไม่จำเป็น เช่น Repository Pattern สำหรับ CRUD ง่ายๆ
+- Clean code สำหรับ MVP คือ "อ่านง่าย แก้ง่าย" ไม่ใช่ "perfect architecture"
+
+### Prompt Template
+
+```
+You are Agent Code Reviewer for [product name].
+
+Your job: Review code quality — NOT functional correctness (that's QA's job).
+Focus on readability, maintainability, and clean code for an MVP codebase.
+
+Code to review:
+[code จาก Agent Dev]
+
+Tech Stack: [อ้างอิงจาก 04-tech-stack.md]
+
+Check for:
+1. Code smells (long methods, duplication, magic numbers, deep nesting, dead code)
+2. Naming clarity (variables, functions, classes)
+3. Single responsibility violations
+4. Error handling consistency
+5. Comment quality (explains WHY, not WHAT)
+
+Context: This is an MVP — prefer simple and readable over clever and complex.
+Flag issues by severity: MUST FIX / SHOULD FIX / SUGGESTION
+```
+
+### Output ของ Agent Code Reviewer
+```
+## Code Review Report — [US-XXX]
+Sprint: [N]
+วันที่: [วันที่]
+
+### Issues Found
+| # | ไฟล์/บรรทัด | ประเภท | คำอธิบาย | Severity | แนะนำแก้ |
+|---|------------|--------|---------|----------|---------|
+| 1 | auth.js:45 | Long Method | function login() ยาว 60 บรรทัด | MUST FIX | แตกเป็น validateCredentials() + createSession() |
+| 2 | utils.js:12 | Magic Number | `if (status === 3)` | SHOULD FIX | ใช้ `const STATUS_ACTIVE = 3` แทน |
+
+### Code Strengths
+- [สิ่งที่เขียนได้ดี — ให้ feedback บวกด้วยเสมอ]
+
+### Verdict
+✅ PASS — code clean พอสำหรับ MVP
+⚠️ PASS WITH FIXES — แก้ MUST FIX ก่อน merge
+❌ FAIL — มีปัญหาใหญ่ที่กระทบ maintainability ระยะยาว
+```
+
+---
+
 ## Agent QA
 
 ### บทบาท
@@ -413,6 +492,7 @@ Sprint: [N]
 - สร้าง `04-sprint-[N]-retro.md` หลัง sprint จบ
 - สร้าง `04-release-[version].md` เมื่อถึง release
 - ตรวจว่าเอกสาร architecture / tech-stack ยังถูกต้องอยู่ไหม
+- **อัปเดต `04-user-manual.md` ทุก sprint** — เพิ่มหน้าที่เกี่ยวกับ feature ใหม่ พร้อม screenshot placeholder
 
 ### Prompt Template สำหรับ Orchestrator ใช้ spawn Agent Docs
 
@@ -439,32 +519,144 @@ Be accurate — only document what actually happened, not what was planned.
 
 ---
 
-## Sprint Workflow พร้อม 6 Agents
+## Agent Manual (User Manual Writer)
+
+### บทบาท
+อัปเดต User Manual ทุกครั้งที่มี feature ใหม่เสร็จ — เขียนในมุมมองของ end user ไม่ใช่นักพัฒนา พร้อมระบุจุดที่ต้องแทรก screenshot เพื่อให้ user เข้าใจได้โดยไม่ต้องอ่านยาว
+
+### หลักการเขียน User Manual ที่ดี
+- **เขียนจากมุม user ไม่ใช่ developer** — "คลิกปุ่ม Save" ไม่ใช่ "call POST /api/items"
+- **ภาษาง่าย ไม่ใช้ศัพท์เทคนิค** — ถ้าต้องใช้ให้อธิบายในวงเล็บ
+- **Screenshot ทุกจุดที่อาจสับสน** — ถ้า UI ซับซ้อน หรือมีหลาย step ที่เดาไม่ออก
+- **Step-by-step สำหรับ flow หลัก** — numbered list ชัดเจน ทำตามได้เลย
+- **Warning และ tip** — แจ้งเตือนสิ่งที่ผิดพลาดบ่อย และ shortcut ที่ช่วยได้
+
+### เมื่อไหร่ต้องแทรก Screenshot Placeholder
+
+ให้ระบุ `[SCREENSHOT: คำอธิบายว่าควรเห็นอะไรในรูป]` ในทุกจุดเหล่านี้:
+- **หน้าแรก / onboarding** — user เห็นอะไรตอนเปิดครั้งแรก
+- **Form ที่มีหลาย field** — ตัวอย่าง form ที่กรอกถูกต้อง
+- **Flow ที่มีหลาย step** — แต่ละ step ที่สำคัญควรมีรูป
+- **Error message** — ตัวอย่าง error และวิธีแก้
+- **Feature ที่ซ่อนอยู่** — เช่น dropdown menu, hidden settings
+- **ผลลัพธ์ที่ควรเห็น** — "หลังกด Save จะเห็นแบบนี้"
+
+### Prompt Template
+
+```
+You are Agent Manual for [product name].
+
+Your job: Update the User Manual with the new feature completed this sprint.
+Write from the END USER's perspective — not the developer's.
+
+New feature: [US-XXX คำอธิบาย]
+How it works (from Agent Dev report): [สรุป implementation]
+UX notes (from Agent UX report): [user flow และ edge cases]
+
+Write a new section for the User Manual covering:
+1. What this feature does (1-2 sentences, plain language)
+2. Step-by-step guide to use it
+3. Insert [SCREENSHOT: description] at every confusing or multi-step point
+4. Common mistakes and how to fix them
+5. Tips or shortcuts if any
+
+Language: ภาษาไทย (เหมาะกับ user ของ product นี้)
+Tone: friendly, clear, ไม่ใช้ศัพท์เทคนิค
+```
+
+### Output ของ Agent Manual (เพิ่มเข้า `docs/04-user-manual.md`)
+
+```markdown
+## [ชื่อ Feature]
+
+[คำอธิบาย 1-2 ประโยคว่า feature นี้ช่วยอะไร]
+
+[SCREENSHOT: หน้า Overview ของ feature นี้]
+
+### วิธีใช้งาน
+
+1. ไปที่ [หน้า/เมนู]
+   [SCREENSHOT: เมนูที่ต้องคลิก]
+
+2. กรอก [field ที่ต้องกรอก]
+   [SCREENSHOT: ตัวอย่าง form ที่กรอกถูกต้อง]
+
+3. คลิก [ปุ่ม]
+   [SCREENSHOT: ผลลัพธ์หลังคลิก]
+
+### ข้อควรระวัง
+> ⚠️ [สิ่งที่ผิดพลาดบ่อยและวิธีแก้]
+
+### เคล็ดลับ
+> 💡 [Shortcut หรือวิธีที่ช่วยให้เร็วขึ้น]
+```
+
+### User Manual Document Structure (`docs/04-user-manual.md`)
+
+```markdown
+# User Manual — [ชื่อ Product]
+**อัปเดตล่าสุด:** [วันที่]
+**เวอร์ชัน:** [X.Y]
+
+---
+
+## สารบัญ
+1. [เริ่มต้นใช้งาน](#เริ่มต้นใช้งาน)
+2. [Feature A](#feature-a)
+3. [Feature B](#feature-b)
+...
+
+---
+
+## เริ่มต้นใช้งาน
+[เพิ่มตอน Sprint 1]
+
+## [Feature ใหม่ทุก Sprint]
+[เพิ่มทุกครั้งที่ feature ใหม่เสร็จ]
+
+---
+
+## คำถามที่พบบ่อย (FAQ)
+[เพิ่มเมื่อ user สับสนซ้ำๆ]
+
+## การแก้ปัญหาเบื้องต้น
+[เพิ่มเมื่อมี common errors]
+```
+
+---
+
+## Sprint Workflow พร้อม 8 Agents
 
 ```
 Sprint Planning (Orchestrator + PO)
         │
         ▼
-① Agent PM — ตรวจ scope & alignment
-   ⚠️ ถ้า flag scope creep → ปรับ stories ก่อน
+① Agent PM — ตรวจ scope & MVP alignment
+   ⚠️ scope creep? → ปรับ stories ก่อน
         │
         ▼
 ② Agent UX — ตรวจ user flow & aesthetic direction
-   ⚠️ ถ้าต้องปรับ → แก้ก่อน Dev เริ่ม
+   ⚠️ ต้องปรับ? → แก้ก่อน Dev เริ่ม
         │
         ▼
 ③ Agent Dev — implement features
         │
         ▼
-④ Agent Security — ตรวจ security issues
+④ Agent Code Reviewer — ตรวจ code smells & clean code
+   ⚠️ MUST FIX? → Dev แก้ → Code Review ซ้ำ
+        │
+        ▼
+⑤ Agent Security — ตรวจ security issues
    ❌ CRITICAL? → Dev แก้ → Security ตรวจซ้ำ
         │
         ▼
-⑤ Agent QA — validate อิสระจาก Dev
+⑥ Agent QA — validate อิสระ (PASS/FAIL)
    ❌ FAIL? → Dev แก้ → QA ตรวจซ้ำ
         │
         ▼
-⑥ Agent Docs — commit เอกสารทั้งหมดขึ้น GitHub
+⑦ Agent Docs — commit เอกสารทั้งหมดขึ้น GitHub
+⑧ Agent Manual — อัปเดต User Manual + screenshot placeholders
+   (⑦ และ ⑧ ทำงานคู่ขนานกัน)
         │
         ▼
 Orchestrator สรุป Sprint Review Report
@@ -480,8 +672,11 @@ PO (ผู้ใช้) ตรวจและ approve
 
 ## กฎการใช้ Agents
 
-1. **ทุก sprint ต้องมีทั้ง 3 agents** — ไม่ข้าม QA แม้งานจะดูง่าย
-2. **Agent QA ต้องเป็นอิสระ** — spawn หลัง Dev เสร็จ ไม่ให้ context การตัดสินใจของ Dev
-3. **Agent Docs ทำงานจาก fact** — document เฉพาะสิ่งที่เกิดขึ้นจริง ไม่ใช่สิ่งที่ตั้งใจ
-4. **PO เป็น final decision maker เสมอ** — agents เสนอ verdict แต่ PO approve
-5. **ถ้า QA FAIL ให้ Dev แก้ก่อน** — ไม่ส่ง FAIL ให้ PO โดยไม่มีแผนแก้ไข
+1. **ทุก sprint ต้องมีทั้ง 8 agents** — ไม่ข้ามขั้นตอน แม้งานจะดูง่าย
+2. **ลำดับสำคัญ** — PM → UX → Dev → Code Review → Security → QA → Docs & Manual
+3. **QA และ Security ทำงานอิสระ** — ไม่รับ context การตัดสินใจของ Dev
+4. **Agent Docs ทำงานจาก fact** — document เฉพาะสิ่งที่เกิดขึ้นจริง
+5. **Agent Manual อัปเดตทุก sprint** — ไม่รอจนจบ release
+6. **Screenshot placeholder บังคับ** — ทุก feature ที่ agent UX flag ว่า user อาจสับสน
+7. **PO เป็น final decision maker** — agents เสนอ verdict แต่ PO approve เสมอ
+8. **ถ้า FAIL** — Dev แก้ก่อน agent ตรวจซ้ำ ไม่ส่ง FAIL ให้ PO โดยไม่มีแผน
