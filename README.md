@@ -1,6 +1,6 @@
 # Solopreneur Skill
 
-Claude skill สำหรับ Solo Entrepreneur ที่ต้องการพัฒนา Digital Product อย่างเป็นระบบ ตั้งแต่ไอเดียจนถึง launch
+Claude skill สำหรับ Solo Entrepreneur ที่ต้องการพัฒนา Digital Product อย่างเป็นระบบ ตั้งแต่ไอเดียจนถึง launch — พร้อมระบบ 8 sub-agents ตรวจสอบคุณภาพทุก sprint
 
 ---
 
@@ -15,29 +15,61 @@ Claude skill สำหรับ Solo Entrepreneur ที่ต้องการ
 
 - **ภาษา:** ไทย / English
 - **Framework:** Scrum — คุณรับบทบาท Product Owner ตรวจงานทุก Sprint
-- **Multi-Agent:** Phase 4 ใช้ sub-agents 3 ตัว (Dev / QA / Docs) ตรวจสอบกันเอง
+- **MVP-focused:** มี guardrails ป้องกัน scope creep และ over-engineering ตลอดเวลา
+- **GitHub-first:** tasks ทุกอย่างผ่าน GitHub Issues, เอกสารทั้งหมด commit ขึ้น repo
 
 ---
 
-## วิธีติดตั้ง
+## 8-Agent System
 
-### วิธีที่ 1 — ติดตั้งจาก .skill file (แนะนำ)
+ใน Phase 4 ทุก sprint ผ่านการตรวจสอบโดย sub-agents 8 ตัวตามลำดับ ก่อนส่งให้คุณ (PO) approve:
 
-1. ดาวน์โหลดไฟล์ [solopreneur-skill.skill](https://github.com/nattaponra/solopreneur-skill/releases/latest)
-2. เปิด **Claude Desktop**
-3. ไปที่ **Settings → Skills**
-4. คลิก **Install from file** แล้วเลือกไฟล์ `.skill` ที่ดาวน์โหลดมา
-5. ติดตั้งเสร็จ — พร้อมใช้งานทันที
+```
+① Agent PM            → ตรวจ scope & MVP alignment ก่อน Dev เริ่ม
+② Agent UX            → ตรวจ user flow & aesthetic direction
+③ Agent Dev           → implement features
+④ Agent Code Reviewer → ตรวจ code smells & clean code
+⑤ Agent Security      → ตรวจ security issues
+⑥ Agent QA            → validate อิสระ — PASS / FAIL
+⑦ Agent Docs     ┐    → commit เอกสารขึ้น GitHub
+⑧ Agent Manual   ┘    → อัปเดต User Manual + screenshot placeholders
+        ↓
+  PO (คุณ) approve
+```
 
-### วิธีที่ 2 — ติดตั้งจาก Source
+---
+
+## วิธีติดตั้งบน Claude Code
+
+### วิธีที่ 1 — Clone โดยตรง (แนะนำ)
 
 ```bash
-# Clone repository
-git clone https://github.com/nattaponra/solopreneur-skill.git
-
-# เปิด Claude Desktop → Settings → Skills → Install from folder
-# เลือก folder: solopreneur-skill/solopreneur-skill
+# Personal skill — ใช้ได้ทุก project
+git clone https://github.com/nattaponra/solopreneur-skill.git \
+  ~/.claude/skills/solopreneur-skill
 ```
+
+```bash
+# Project skill — ใช้เฉพาะ project นั้น
+git clone https://github.com/nattaponra/solopreneur-skill.git \
+  .claude/skills/solopreneur-skill
+```
+
+### วิธีที่ 2 — Copy ด้วยตัวเอง
+
+```bash
+mkdir -p ~/.claude/skills/solopreneur-skill
+cp SKILL.md ~/.claude/skills/solopreneur-skill/
+cp -r references ~/.claude/skills/solopreneur-skill/
+```
+
+### เรียกใช้งาน
+
+```
+/solopreneur-skill
+```
+
+หรือให้ Claude เรียกอัตโนมัติเมื่อตรวจพบว่าคุณกำลัง develop product
 
 ---
 
@@ -45,130 +77,88 @@ git clone https://github.com/nattaponra/solopreneur-skill.git
 
 ### 🌱 เริ่มจากศูนย์ — มีแค่ไอเดีย
 
-**คุณพิมพ์:**
 ```
 ฉันมีไอเดียอยากสร้าง app ช่วยให้ freelancer ออก invoice ได้เร็วขึ้น
 ```
 
-**Skill จะ:**
-1. ถามคำถามเพื่อ define problem statement ให้ชัด
-2. ช่วยระบุ customer segment และ value proposition
-3. บันทึก `01-problem-solution.md` ให้อัตโนมัติ
-4. พาไปต่อที่ Lean Canvas ใน Phase 2
+Skill จะ: ถาม → define problem statement → ระบุ customer segment → บันทึก `01-problem-solution.md` → พาไป Phase 2
 
 ---
 
-### 📊 Phase 2 — ทำ Business Model
+### 📊 Phase 2 — Business Model
 
-**คุณพิมพ์:**
 ```
 ช่วยทำ Lean Canvas ให้หน่อย product ของฉันคือ SaaS สำหรับ freelancer
 ```
 
-**Skill จะ:**
-1. กรอก Lean Canvas ทีละ block พร้อมถามข้อมูลที่ขาด
-2. แนะนำ revenue model ที่เหมาะสม (subscription, freemium ฯลฯ)
-3. ประมาณ unit economics เบื้องต้น (CAC, LTV)
-4. บันทึก `02-lean-canvas.md` และ `02-business-model.md`
+Skill จะ: กรอก Lean Canvas ทีละ block → แนะนำ revenue model → ประมาณ unit economics → บันทึก `02-lean-canvas.md`
 
 ---
 
 ### 🧪 Phase 3 — Validate ก่อนสร้าง
 
-**คุณพิมพ์:**
 ```
 อยากทดสอบว่ามีคนต้องการ product นี้จริงไหม ก่อนจะเริ่มสร้าง
 ```
 
-**Skill จะ:**
-1. ช่วยกำหนด hypothesis ที่ต้อง validate
-2. สร้าง user interview guide พร้อมคำถาม Mom Test
-3. แนะนำ MVP type ที่เร็วที่สุด (landing page, concierge ฯลฯ)
-4. บันทึก `03-validation-plan.md` และ `03-interview-guide.md`
-5. หลัง validate เสร็จ สรุปผลใน `03-validation-results.md`
+Skill จะ: กำหนด hypothesis → สร้าง user interview guide (Mom Test) → แนะนำ MVP type → บันทึก `03-validation-plan.md`
 
 ---
 
-### 🚀 Phase 4 — เริ่มพัฒนาด้วย Scrum
+### 🚀 Phase 4 — เริ่มพัฒนา Sprint แรก
 
-**คุณพิมพ์:**
 ```
 validate แล้ว พร้อมสร้างแล้ว อยากเริ่ม sprint แรก
 ```
 
-**Skill จะ:**
-1. ช่วยเขียน PRD และ System Architecture
-2. สร้าง Product Backlog พร้อม user stories และ acceptance criteria
-3. วาง Sprint 1 Plan พร้อม story points
-4. บันทึก `04-prd.md`, `04-architecture.md`, `04-backlog.md`, `04-sprint-1-plan.md`
+Skill จะ: เขียน PRD + Architecture → สร้าง Product Backlog + User Stories → วาง Sprint 1 Plan → ส่ง agents ทั้ง 8 ทำงาน
 
 ---
 
-### 🤖 Multi-Agent Validation — Dev / QA / Docs
+### 🤖 Sprint ทุกอัน — 8 Agents ทำงานอัตโนมัติ
 
-**ใน Phase 4 ทุก sprint จะมี sub-agents 3 ตัวทำงานอัตโนมัติ:**
-
-```
-Agent Dev  →  implement feature
-Agent QA   →  validate อิสระ (ไม่รู้ context ของ Dev)
-Agent Docs →  อัปเดตเอกสารตามผลจริง
-```
-
-**คุณพิมพ์:**
 ```
 Sprint 1 เริ่มเลย feature แรกคือ user login
 ```
 
-**Skill จะ:**
-1. **Agent Dev** — วาง implementation plan + เขียน code/pseudocode สำหรับ login feature
-2. **Agent QA** — รับแค่ user story และ code ไปตรวจ acceptance criteria ทุกข้อ, หา edge cases, ออก verdict PASS/FAIL
-3. **Agent Docs** — อัปเดต backlog, บันทึก bug ที่ QA พบ, สร้าง sprint review draft
-4. **คุณ (PO)** — รับ Sprint Review Report สรุปพร้อม approve หรือ reject
+| Agent | สิ่งที่ทำ |
+|-------|---------|
+| PM | ตรวจว่า login ตรง MVP scope ไหม |
+| UX | ตรวจ user flow + แนะนำ aesthetic direction |
+| Dev | implement login feature |
+| Code Reviewer | ตรวจ code smells, naming, DRY |
+| Security | ตรวจ auth, password hashing, token expiry |
+| QA | ตรวจ acceptance criteria ทุกข้อ — PASS/FAIL |
+| Docs | commit sprint plan, review, bug log ขึ้น GitHub |
+| Manual | อัปเดต User Manual + `[SCREENSHOT: login form]` |
 
-ถ้า QA **FAIL** → Dev แก้ → QA ตรวจซ้ำ → ผ่านแล้วค่อยส่งคุณรีวิว
-
----
-
-### ✅ Sprint Review — คุณตรวจงานในฐานะ PO
-
-**คุณพิมพ์:**
-```
-Sprint 1 เสร็จแล้ว ช่วยเตรียม checklist สำหรับ review หน่อย
-```
-
-**Skill จะ:**
-1. สร้าง Sprint Review checklist ตาม acceptance criteria ที่กำหนดไว้
-2. บันทึกผลการ review ว่า story ไหน Accepted / Rejected
-3. อัปเดต backlog ตามผล review
-4. บันทึก `04-sprint-1-review.md` และ `04-sprint-1-retro.md`
-5. เริ่ม Sprint 2 Planning ทันที
+ถ้า QA **FAIL** → Dev แก้ → QA ตรวจซ้ำ → ผ่านแล้วค่อยส่งคุณ review
 
 ---
 
-### 📄 เอกสารที่ได้รับตลอด Journey
+### 📄 เอกสารที่ได้ตลอด Journey (commit ขึ้น GitHub ทั้งหมด)
 
 ```
-my-product/
-├── 01-problem-solution.md      ← Phase 1
-├── 02-lean-canvas.md           ← Phase 2
-├── 02-business-model.md        ← Phase 2
-├── 03-validation-plan.md       ← Phase 3
-├── 03-interview-guide.md       ← Phase 3
-├── 03-validation-results.md    ← Phase 3
-├── 04-prd.md                   ← Phase 4
-├── 04-architecture.md          ← Phase 4
-├── 04-tech-stack.md            ← Phase 4
-├── 04-definition-of-done.md    ← Phase 4
-├── 04-backlog.md               ← Phase 4 (อัปเดตทุก sprint)
-├── 04-test-plan.md             ← Phase 4
-├── 04-bug-log.md               ← Phase 4 (อัปเดตต่อเนื่อง)
-├── 04-sprint-1-plan.md         ← Sprint 1
-├── 04-sprint-1-review.md       ← Sprint 1
-├── 04-sprint-1-retro.md        ← Sprint 1
-└── 04-release-v1.0.md          ← เมื่อ launch
+docs/
+├── 01-problem-solution.md       ← Phase 1
+├── 02-lean-canvas.md            ← Phase 2
+├── 02-business-model.md         ← Phase 2
+├── 03-validation-plan.md        ← Phase 3
+├── 03-interview-guide.md        ← Phase 3
+├── 03-validation-results.md     ← Phase 3
+├── 04-prd.md                    ← Phase 4
+├── 04-architecture.md           ← Phase 4
+├── 04-tech-stack.md             ← Phase 4
+├── 04-definition-of-done.md     ← Phase 4
+├── 04-backlog.md                ← Phase 4 (อัปเดตทุก sprint)
+├── 04-test-plan.md              ← Phase 4
+├── 04-bug-log.md                ← Phase 4 (อัปเดตต่อเนื่อง)
+├── 04-user-manual.md            ← Phase 4 (อัปเดตทุก sprint + screenshots)
+├── 04-sprint-1-plan.md          ← Sprint 1
+├── 04-sprint-1-review.md        ← Sprint 1
+├── 04-sprint-1-retro.md         ← Sprint 1
+└── 04-release-v1.0.md           ← เมื่อ launch
 ```
-
-Skill จะทำงานอัตโนมัติเมื่อ Claude ตรวจพบว่าคุณกำลังพัฒนา product
 
 ---
 
@@ -176,12 +166,14 @@ Skill จะทำงานอัตโนมัติเมื่อ Claude ต
 
 ```
 solopreneur-skill/
-├── SKILL.md                        # ไฟล์หลักของ skill
+├── SKILL.md                        # ไฟล์หลัก — frontmatter + instructions
 └── references/
-    ├── problem-solution.md         # รายละเอียด Phase 1
-    ├── business-model.md           # รายละเอียด Phase 2
-    ├── research-validation.md      # รายละเอียด Phase 3
-    └── sdlc-scrum.md               # รายละเอียด Phase 4
+    ├── problem-solution.md         # Phase 1 templates & checklist
+    ├── business-model.md           # Phase 2 — Lean Canvas, revenue model
+    ├── research-validation.md      # Phase 3 — hypothesis, interview guide, MVP
+    ├── sdlc-scrum.md               # Phase 4 — Scrum workflow + SDLC document templates
+    ├── agents.md                   # 8-agent system — roles, prompts, outputs
+    └── github-workflow.md          # GitHub setup, Issues, Labels, Milestones
 ```
 
 ---
