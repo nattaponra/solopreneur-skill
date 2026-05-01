@@ -295,3 +295,253 @@ Trend: ⬆️ / ⬇️ / ➡️ เทียบ Sprint ที่แล้ว
 - [ ] Velocity บันทึกแล้ว
 
 → วนซ้ำ Sprint ถัดไป จนถึง Release
+
+---
+
+## 📄 SDLC Document Templates
+
+ใช้ template เหล่านี้เมื่อถึงขั้นตอนที่เกี่ยวข้อง บันทึกเป็นไฟล์จริงใน workspace ทุกครั้ง
+
+---
+
+### `04-prd.md` — Product Requirements Document
+
+```markdown
+# PRD — [ชื่อ Product]
+**สร้างเมื่อ:** [วันที่]
+**Phase:** 4
+**สถานะ:** Draft / Final
+**เวอร์ชัน:** [1.0]
+
+---
+
+## 1. Overview
+[อธิบาย product ในย่อหน้าเดียว]
+
+## 2. Goals & Success Metrics
+| เป้าหมาย | Metric | เป้าภายใน [X เดือน] |
+|---------|--------|-------------------|
+| | | |
+
+## 3. User Personas
+[อ้างอิงจาก 01-problem-solution.md]
+
+## 4. Features (In Scope)
+| Feature | Priority | Phase/Sprint |
+|---------|----------|-------------|
+| | Must Have | Sprint 1 |
+
+## 5. Out of Scope
+- [สิ่งที่ไม่ทำใน version นี้]
+
+## 6. Non-Functional Requirements
+- Performance: [เช่น load time < 2s]
+- Security: [เช่น HTTPS, auth required]
+- Scalability: [เช่น รองรับ X users]
+
+## 7. Constraints & Assumptions
+- [ข้อจำกัดที่รู้แล้ว]
+```
+
+---
+
+### `04-architecture.md` — System Architecture
+
+```markdown
+# System Architecture — [ชื่อ Product]
+**สร้างเมื่อ:** [วันที่]
+**สถานะ:** Draft / Final
+
+---
+
+## Overview Diagram
+[ASCII diagram หรืออธิบาย component หลัก]
+
+## Components
+| Component | หน้าที่ | Technology |
+|-----------|--------|-----------|
+| Frontend | | |
+| Backend/API | | |
+| Database | | |
+| Auth | | |
+| Storage | | |
+| Hosting | | |
+
+## Data Flow
+[อธิบาย flow หลักของข้อมูล]
+
+## Security Considerations
+- [รายการ]
+
+## Scalability Plan
+- [แนวทาง scale เมื่อ user เพิ่ม]
+```
+
+---
+
+### `04-tech-stack.md` — Tech Stack & Decisions
+
+```markdown
+# Tech Stack — [ชื่อ Product]
+**สร้างเมื่อ:** [วันที่]
+
+---
+
+## Stack ที่เลือก
+
+| Layer | Technology | เหตุผล |
+|-------|-----------|--------|
+| Frontend | | |
+| Backend | | |
+| Database | | |
+| Auth | | |
+| Hosting | | |
+| CI/CD | | |
+
+## ADR (Architecture Decision Records)
+บันทึกการตัดสินใจสำคัญที่นี่
+
+### ADR-001: [ชื่อ decision]
+- **Context:** [ทำไมต้องตัดสินใจ]
+- **Decision:** [เลือกอะไร]
+- **Consequences:** [ผลที่ตามมา]
+```
+
+---
+
+### `04-definition-of-done.md` — Definition of Done
+
+```markdown
+# Definition of Done — [ชื่อ Product]
+**สร้างเมื่อ:** [วันที่]
+**ใช้กับ:** ทุก Sprint
+
+---
+
+## User Story ถือว่า Done เมื่อ
+- [ ] Code เขียนเสร็จและ peer review แล้ว (ถ้ามีทีม)
+- [ ] Unit tests ผ่าน
+- [ ] Acceptance Criteria ทุกข้อผ่าน
+- [ ] Deploy to staging สำเร็จ
+- [ ] PO (ผู้ใช้) ตรวจและ approve แล้ว
+- [ ] ไม่มี known critical bugs
+- [ ] เอกสารที่เกี่ยวข้องอัปเดตแล้ว
+
+## Sprint ถือว่า Done เมื่อ
+- [ ] ทุก story ใน sprint ผ่าน Definition of Done ข้างต้น
+- [ ] Sprint Review เสร็จสิ้น PO sign off
+- [ ] Backlog อัปเดตแล้ว
+- [ ] Retrospective เสร็จสิ้น
+```
+
+---
+
+### `04-test-plan.md` — Test Plan
+
+```markdown
+# Test Plan — [ชื่อ Product]
+**สร้างเมื่อ:** [วันที่]
+**อัปเดตล่าสุด:** [วันที่]
+
+---
+
+## Testing Strategy
+| ประเภท | เครื่องมือ | ความรับผิดชอบ |
+|--------|---------|--------------|
+| Unit Test | | Dev |
+| Integration Test | | Dev |
+| Manual / UAT | | PO |
+| Performance | | Dev |
+
+## Test Cases หลัก
+| Feature | Test Case | Expected Result | Status |
+|---------|-----------|----------------|--------|
+| | | | |
+
+## Bug Severity Levels
+- **Critical** — ระบบล่ม, data loss → fix ทันที
+- **High** — feature หลักใช้ไม่ได้ → fix ใน sprint นี้
+- **Medium** — feature ใช้ได้แต่ผิดปกติ → fix sprint ถัดไป
+- **Low** — cosmetic, UX เล็กน้อย → backlog
+```
+
+---
+
+### `04-bug-log.md` — Bug & Issue Log
+
+```markdown
+# Bug & Issue Log — [ชื่อ Product]
+**อัปเดตล่าสุด:** [วันที่]
+
+---
+
+| ID | วันที่พบ | คำอธิบาย | Severity | Sprint | สถานะ | วันที่แก้ |
+|----|---------|---------|----------|--------|-------|---------|
+| BUG-001 | | | Critical/High/Medium/Low | | Open/Fixed | |
+```
+
+---
+
+### `04-release-[version].md` — Release Notes
+
+```markdown
+# Release Notes — v[X.Y.Z]
+**วันที่ release:** [วันที่]
+**Sprints:** [N] ถึง [N+X]
+
+---
+
+## What's New
+- [Feature ใหม่]
+
+## Improvements
+- [สิ่งที่ปรับปรุง]
+
+## Bug Fixes
+- [BUG-XXX] [คำอธิบาย]
+
+## Known Issues
+- [ปัญหาที่รู้อยู่แล้ว]
+
+## Migration Notes (ถ้ามี)
+- [สิ่งที่ผู้ใช้ต้องทำเมื่อ upgrade]
+```
+
+---
+
+### `04-api-docs.md` — API Documentation
+
+```markdown
+# API Documentation — [ชื่อ Product]
+**อัปเดตล่าสุด:** [วันที่]
+**Base URL:** [URL]
+**Auth:** [Bearer Token / API Key / etc.]
+
+---
+
+## Endpoints
+
+### [GET/POST/PUT/DELETE] /[endpoint]
+**คำอธิบาย:** [สิ่งที่ endpoint นี้ทำ]
+
+**Request:**
+\`\`\`json
+{
+  "field": "type"
+}
+\`\`\`
+
+**Response (200):**
+\`\`\`json
+{
+  "field": "value"
+}
+\`\`\`
+
+**Error Codes:**
+| Code | ความหมาย |
+|------|---------|
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 404 | Not Found |
+```

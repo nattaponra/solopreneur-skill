@@ -218,9 +218,32 @@ Sprint Planning → Development → Sprint Review (PO รีวิว) → Retro
 | 3 | User Interview Guide | `03-interview-guide.md` | Markdown |
 | 3 | Validation Results | `03-validation-results.md` | Markdown |
 | 4 | Product Requirements Document (PRD) | `04-prd.md` | Markdown |
+| 4 | System Architecture | `04-architecture.md` | Markdown |
+| 4 | Tech Stack & Technical Decisions | `04-tech-stack.md` | Markdown |
 | 4 | Product Backlog | `04-backlog.md` | Markdown |
+| 4 | Definition of Done | `04-definition-of-done.md` | Markdown |
 | 4 | Sprint Plan (ทุก sprint) | `04-sprint-[N]-plan.md` | Markdown |
-| 4 | Sprint Review (ทุก sprint) | `04-sprint-[N]-review.md` | Markdown |
+| 4 | Sprint Review / PO Checklist (ทุก sprint) | `04-sprint-[N]-review.md` | Markdown |
+| 4 | Sprint Retrospective (ทุก sprint) | `04-sprint-[N]-retro.md` | Markdown |
+| 4 | Test Plan | `04-test-plan.md` | Markdown |
+| 4 | Bug & Issue Log | `04-bug-log.md` | Markdown |
+| 4 | Release Notes (ทุก release) | `04-release-[version].md` | Markdown |
+| 4 | API Documentation (ถ้ามี) | `04-api-docs.md` | Markdown |
+
+### เมื่อไหร่สร้างเอกสาร SDLC แต่ละชิ้น
+
+- **PRD** — สร้างทันทีก่อน Sprint 1 ครอบคลุม goals, features, non-functional requirements
+- **Architecture** — สร้างหลัง PRD อนุมัติ ก่อนเริ่ม Sprint 1
+- **Tech Stack** — สร้างพร้อม Architecture บันทึกเหตุผลการเลือก
+- **Backlog** — สร้างตอน Sprint Planning ครั้งแรก อัปเดตทุก sprint
+- **Definition of Done** — สร้างครั้งเดียวก่อน Sprint 1 ใช้ตลอดโปรเจกต์
+- **Sprint Plan** — สร้างทุกต้น sprint
+- **Sprint Review** — สร้างทุกปลาย sprint หลัง PO ตรวจงาน
+- **Sprint Retro** — สร้างทันทีหลัง Sprint Review
+- **Test Plan** — สร้างก่อน Sprint 1 อัปเดตเมื่อมี feature ใหม่
+- **Bug Log** — สร้างตั้งแต่ Sprint 1 อัปเดตต่อเนื่อง
+- **Release Notes** — สร้างทุกครั้งที่ release version ใหม่
+- **API Docs** — สร้างเมื่อมี API เกิดขึ้น อัปเดตทุกครั้งที่ API เปลี่ยน
 
 ### โฟลเดอร์โครงสร้าง
 
@@ -235,10 +258,20 @@ Sprint Planning → Development → Sprint Review (PO รีวิว) → Retro
 ├── 03-interview-guide.md
 ├── 03-validation-results.md
 ├── 04-prd.md
+├── 04-architecture.md
+├── 04-tech-stack.md
+├── 04-definition-of-done.md
 ├── 04-backlog.md
+├── 04-test-plan.md
+├── 04-bug-log.md
 ├── 04-sprint-1-plan.md
 ├── 04-sprint-1-review.md
-└── 04-sprint-2-plan.md  ← เพิ่มเรื่อยๆ
+├── 04-sprint-1-retro.md
+├── 04-sprint-2-plan.md      ← เพิ่มทุก sprint
+├── 04-sprint-2-review.md
+├── 04-sprint-2-retro.md
+├── 04-release-v1.0.md       ← เพิ่มทุก release
+└── 04-api-docs.md            ← ถ้ามี API
 ```
 
 ถามชื่อ product จากผู้ใช้ในช่วง Intake แล้วใช้เป็นชื่อโฟลเดอร์ (lowercase, ใช้ `-` แทนเว้นวรรค)
